@@ -2,10 +2,9 @@
 title: "Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事"
 subtitle: ""
 description: ""
-images: []
-
-tags: []
-categories: []
+tags: ["Minecraft", "Forge", "掉落物", "杂谈", "方块"]
+series: ["Minecraft 睡前杂谈"]
+date: 2021-12-13T15:25:00+08:00
 ---
 
 # Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事

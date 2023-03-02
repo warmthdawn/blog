@@ -33,7 +33,7 @@ code:
   copy: true
   maxShownLines: 50
 math:
-  enable: false
+  enable: true
   # ...
 mapbox:
   # ...
