@@ -1,3 +1,13 @@
+---
+title: "Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事"
+subtitle: ""
+description: ""
+images: []
+
+tags: []
+categories: []
+---
+
 # Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事
 
 *警告：本教程废话连篇，请酌情跳过*

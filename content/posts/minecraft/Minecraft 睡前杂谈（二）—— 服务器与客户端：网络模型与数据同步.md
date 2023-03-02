@@ -1,3 +1,8 @@
+---
+title: "Minecraft 睡前杂谈（二）—— 服务器与客户端：网络模型与数据同步"
+subtitle: ""
+---
+
 # Minecraft 睡前杂谈（二）—— 服务器与客户端：网络模型与数据同步
 
 ### Client与Server： Minecraft的网络模型
