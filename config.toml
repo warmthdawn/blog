@@ -214,9 +214,9 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
       disclaimer = ""
     # 主页文章列表
     [params.home.posts]
-      enable = false
+      enable = true
       # 主页每页显示文章数量
-      # paginate = 6
+      paginate = 6
       #  被 params.page 中的 hiddenFromHomePage 替代
       # 当你没有在文章前置参数中设置 "hiddenFromHomePage" 时的默认行为
       # defaultHiddenFromHomePage = false
@@ -324,7 +324,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
       # 是否使用目录
       enable = true
       #  是否保持使用文章前面的静态目录
-      keepStatic = true
+      keepStatic = false
       # 是否使侧边目录自动折叠展开
       auto = true
     #  代码配置
