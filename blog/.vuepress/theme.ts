@@ -3,7 +3,7 @@ import {  zhNavbar } from "./navbar";
 import { zhSidebar } from "./sidebar";
 
 export default hopeTheme({
-  hostname: "https://wartmthdawn.github.io/blog",
+  hostname: "https://warmthdawn.github.io",
 
   author: {
     name: "WarmthDawn",

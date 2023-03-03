@@ -6,5 +6,3 @@ category: Minecraft
 icon: mdi:minecraft
 ---
 
-<AutoCatalog />
-
