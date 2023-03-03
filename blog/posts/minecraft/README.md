@@ -5,3 +5,6 @@ title: Minecraft
 category: Minecraft
 icon: mdi:minecraft
 ---
+
+<AutoCatalog />
+
