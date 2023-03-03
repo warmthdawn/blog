@@ -1,19 +1,18 @@
 ---
-title: "Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事"
-subtitle: ""
-description: ""
-tags: ["Minecraft", "Forge", "掉落物", "杂谈", "方块"]
-series: ["Minecraft 睡前杂谈"]
+shortTitle: "Minecraft 睡前废话（一）"
+tag: ["Minecraft", "Forge", "掉落物", "杂谈", "方块"]
+category: "Minecraft"
 date: 2021-12-13T15:25:00+08:00
+icon: clarity:block-solid
 ---
 
 # Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事
 
 *警告：本教程废话连篇，请酌情跳过*
 
-#### Registry与搞事情的Mojang，论屎山是如何形成的
+## Registry与搞事情的Mojang，论屎山是如何形成的
 
-##### 如何从一个方块获取对应的物品
+### 如何从一个方块获取对应的物品
 
 史蒂夫进入了游戏，史蒂夫抡起了他的铁手，好！史蒂夫成功的挖下来一块木头！
 
@@ -44,7 +43,7 @@ public Item asItem() {
 
 继续查看`getItemFromBlock`方法的实现，发现它最终是从`BLOCK_TO_ITEM`这个Map里面获取值的，显然，这个Map是和Registry相关了。那么我们刨根问底，看看这个Map到底是怎么被创建的。
 
-##### N种注册方块的方式
+### N种注册方块的方式
 
 在这之前，让我们先回忆一下如何去注册一个方块。
 
@@ -174,7 +173,7 @@ public static void registerItemBlocks(RegistryEvent.Register<Item> evt) {
 
 当然还有其他更多的写法，感兴趣的可以去详细的研究，然后自己接着造轮子（
 
-##### 注册方块的特点
+### 注册方块的特点
 
 各个模组作者顺着自己的习惯，满足自己的强迫症对注册方块进行了不同程度的封装，但是相同的地方是，每注册一个方块，均会同时注册一个继承自`ItemBlock`的物品，让我们继续再Forge的祖传代码里面寻找，最终我们会发现这样一段代码
 
@@ -206,7 +205,7 @@ public void onAdd(IForgeRegistryInternal<Item> owner, RegistryManager stage, int
 
 那么，开头提到的那种方式，适用于所有方块吗？理论上的答案应该是肯定的，但是现实并不是这样，Mojang开始背锅了。
 
-##### Mojang背锅，原版床的奇怪特性
+### Mojang背锅，原版床的奇怪特性
 
 让我们试试下面的代码（1.12）
 
@@ -242,13 +241,13 @@ public static final Item WHITE_BED = register(new BedItem(Blocks.WHITE_BED, (new
 
 也正因为如此，强烈建议将方块对应的物品继承自`BlockItem`
 
-#### Metadata与Flattening，Mojang终于干了一件正事
+## Metadata与Flattening，Mojang终于干了一件正事
 
 对于什么是meta这个问题我们在这里就不做太多赘述了，感兴趣的小伙伴可以自行去研究一下~
 
 那么为什么还要提这件事呢，因为meta的存在，我们在处理方块和物品对应关系的时候需要进行一些额外的操作~
 
-##### 方块的metadata
+### 方块的metadata
 
 如果你想更多的了解有关meta的问题，请参考[Harbinger 的教程](https://harbinger.covertdragon.team/chapter-05/block-state.html)， 值得一提的是，在1.12.2中你可以将部分方块的状态存储在TileEntity中并且使用getActualState()进行一些操作，就像下面这样
 
@@ -287,7 +286,7 @@ public TileEntity getTileEntity(BlockPos pos)
 
 嗯？你问1.16？那么忽略上面提到的所有内容吧，1.13以后的代码我们终于不需要考虑这些有的没的了，耶！
 
-##### 物品的metadata
+### 物品的metadata
 
 相关的概念同样在[Harbinger 的教程](https://harbinger.covertdragon.team/chapter-04/advanced/meta-hack.html)里已经描述的很清楚了，这里我把它拉出来，主要是像提醒几个问题。
 
@@ -295,9 +294,9 @@ public TileEntity getTileEntity(BlockPos pos)
 - 1.12的metadata虽然是个int值，但是因为序列化成nbt时候保存为short所以最大值只能是`Short.MAX_VALUE`。
 - 虽然一般情况下我们会直接把方块meta和物品meta直接对应，但是实际上两者并没有严格的关联。
 
-#### 从 `getDrops`系列 到 `LootTable`，掉落物方案的统一
+## 从 `getDrops`系列 到 `LootTable`，掉落物方案的统一
 
-##### 1.12方块掉落：`getDrops`系列
+### 1.12方块掉落：`getDrops`系列
 
 对于1.12的模组，Forge对Block类进行了一定程度的patch，你可以通过重写下面提到的部分方法来修改方块的掉落物。
 
@@ -574,9 +573,9 @@ public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, Enti
 
   下一章节我要举得一个例子就体现了没有完整的重写所有相关方法可能引发的潜在bug。
 
-##### 1.16方块掉落：`LootTable`
+### 1.16方块掉落：`LootTable`
 
-##### 仅剩的`getDrops`方法
+### 仅剩的`getDrops`方法
 
 1.16，Mojang对方块掉落物的机制做了巨大的改动，于是乎，上面提到的所有方法全都木大啦！唯一幸存下来的方法只有`getDrops`
 
@@ -609,7 +608,7 @@ public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 new AirBlock(AbstractBlock.Properties.create(Material.AIR).doesNotBlockMovement().noDrops().setAir())
 ```
 
-##### 定义`LootTable`的N种姿势
+### 定义`LootTable`的N种姿势
 
 首先，还不了解`LootTable`的朋友可以参考一些 Minecraft Wiki 的相关资料，这里不过多说明了。
 
@@ -734,11 +733,11 @@ public static final RegistryEntry<Block> TEST_BLOCK = REGISTRATE.object("test_bl
     .register();
 ```
 
-#### `PlayerInteractionManager`与方块破坏的流程
+## `PlayerInteractionManager`与方块破坏的流程
 
 上面那一坨东西很无聊？确实，我也觉得哪些玩意很无聊，那么接下来我们就尽量少放一点代码吧！
 
-##### 方块破坏的流程
+### 方块破坏的流程
 
 如下的`PlayerInteractionManager`和方块掉落相关两个方法的流程图*（删掉了物品掉耐久、掉经验等与掉落物无关的方法）*
 
@@ -770,7 +769,7 @@ F --> |true| onPlayerDestory --> R
 
 和玩家挖掘方块有关的代码就只能是这几个方法了，让我们看看它的实现。
 
-##### `harvestBlock`和`removedByPlayer`，直接影响方块挖掘的方法
+### `harvestBlock`和`removedByPlayer`，直接影响方块挖掘的方法
 
 ```java
 /**
@@ -874,9 +873,9 @@ public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 
 **它的默认实现会`removeTileEntity`**重写的时候记得`super`的调用顺序，以及没有调用`super`的时候记得手动删除。
 
-#### `onItemUse()`与放置方块
+## `onItemUse()`与放置方块
 
-##### 放置方块的流程
+### 放置方块的流程
 
 相比破坏方块可能会出现的各种情况，放置方块的做法就简单的多了，所有相关的方法全部都在`ItemBlock`类的`OnItemUse`方法中*（1.16.5的代码有套一层`tryPlace`但是影响不大）*
 
@@ -888,7 +887,7 @@ public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 
 其中，`isReplaceable`、`getStateForPlacement`和`onBlockPlacedBy`这三个方法是我们主要进行操作的方法。
 
-##### `isReplaceable`和`getStateForPlacement`，放置之前的小准备
+### `isReplaceable`和`getStateForPlacement`，放置之前的小准备
 
 `isReplaceable`方法的作用很简单，判断一个方块是否可以被另一个方块替换，最常见的实现是`草`，在1.12中，你一般只需要返回一个bool类型就好。
 
@@ -989,7 +988,7 @@ public BlockState getStateForPlacement(BlockItemUseContext context) {
 }
 ```
 
-##### `onBlockPlacedBy`与NBT
+### `onBlockPlacedBy`与NBT
 
 这个方法本身作用很简单，参数也很简单，这里就直接举例了：
 
@@ -1045,9 +1044,9 @@ public final void onBlockPlacedBy(@Nonnull World worldIn, @Nonnull BlockPos pos,
 
 有的人可能会好奇，上面之前提到过一个`setTileEntityNBT`的存在。这个方法，它只会读取物品的`BlockEntityTag`标签，并且一般情况下写入的是方块完整的NBT数据，它一般是作为使用指令等给予玩家方块的时候主动添加NBT使用的。而我们如果需要保存方块的NBT一般不会保存所有的NBT标签，通常情况下并不会用到这个方法。
 
-#### 案例分析-保存方块NBT数据：Mojang又要来背锅了（雾）
+## 案例分析-保存方块NBT数据：Mojang又要来背锅了（雾）
 
-##### 为什么Mojang要来背锅？Mojang做错了什么？
+### 为什么Mojang要来背锅？Mojang做错了什么？
 
 说到保存方块的NBT数据，Mojang其实自己有一个实现，朋友们已经知道是什么了，没错就是潜影盒！让我们翻翻它的代码：
 
@@ -1091,7 +1090,7 @@ if(block instanceof BlockShulkerBox && Block.getBlockFromItem(stack_.getItem()) 
    continue;
 ```
 
-##### 我们需要保存哪些数据？数据的选择和接口的抽象
+### 我们需要保存哪些数据？数据的选择和接口的抽象
 
 在保存方块NBT之前，我们需要先决定好哪些数据需要被保存到物品里面。正如我们写`TileEntity`的时候需要恰当的决定哪些字段需要在`readFromNBT`、`writeToNBT` 而哪些字段需要在`getUpdate*/handleUpdata*`系列方法中序列化一样，妥善的安排字段的保存可以消灭很多潜在的bug。例如，在1.12.2中，我们使用上面提到过的方法*（不记得的小伙伴，帮你回忆一下：`getActualState`）*将方块朝向保存到`TileEntity`内部的时候，显然这个属性需要保存且同步到客户端，但是并不需要我们保存在挖掘下来的方块内。
 
@@ -1110,7 +1109,7 @@ public interface IRestorableTileEntity {
 
 当然仁者见仁，轮子怎么造都行，自己写起来快乐就好。
 
-##### 读取NBT：`onBlockPlacedBy`与`placeBlockAt/onBlockPlaced`
+### 读取NBT：`onBlockPlacedBy`与`placeBlockAt/onBlockPlaced`
 
 对于在放置前读取掉落物的NBT，其实我在上面的内容里面已经稍微提了一嘴，我们可以重写`onBlockPlacedBy`方法并在里面读取物品的NBT，写入到TileEntity里面：
 
@@ -1165,7 +1164,7 @@ protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEnt
 
 注意两个版本的区别，1.16和1.12的`ItemBlock`相关代码改动较大，单从方法名称上面就能看出来。`placeBlockAt`方法本身具有放置方块的职责，但是`onBlockPlaced`方法仅仅是起到一个通知的作用，所以前者**必须调用`super`**但后者不要求，因为它默认实现仅仅只是调用了默认的`setTileEntityNBT`方法。
 
-##### 1.12.2保存NBT：`removedByPlayer`的延迟调用
+### 1.12.2保存NBT：`removedByPlayer`的延迟调用
 
 还记得我之前提到的吗，掉落物生成的时机是`harvestBlock`，它间接的调用了`getDrops`，所以我们可以重写这个方法：
 
@@ -1216,7 +1215,7 @@ public boolean removedByPlayer(BlockState state, World world, BlockPos pos, Play
 }
 ```
 
-##### 1.16.6保存NBT：自定义的`LootFunction`
+### 1.16.6保存NBT：自定义的`LootFunction`
 
 前面我们说过，1.16.5的掉落机制有所修改，掉落物可以使用`LootTable`进行定义。但是使用`LootTable`之前，其实我们还是可以使用和1.12类似的写法。
 
@@ -1369,7 +1368,7 @@ JSON版本
 }
 ```
 
-##### 消灭潜在的Bug：方块破坏机引发的问题，这次是星辉作者背锅了
+### 消灭潜在的Bug：方块破坏机引发的问题，这次是星辉作者背锅了
 
 让我们先来看一段代码
 
@@ -1445,9 +1444,9 @@ public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockS
 
 1.16的话，多实现一遍`getPickBlock`就好了。
 
-#### 案例分析-冶炼附魔：嗯？COFH怎么把1.16的冶炼附魔删了x
+## 案例分析-冶炼附魔：嗯？COFH怎么把1.16的冶炼附魔删了x
 
-##### 1.12的实现方式：事件
+### 1.12的实现方式：事件
 
 冶炼附魔这是个很常见的东西了，1.12.2的实现非常简单，监听`HarvestDropsEvent`事件就行：
 
@@ -1475,7 +1474,7 @@ public void handleHarvestDropsEvent(final BlockEvent.HarvestDropsEvent event) {
 }
 ```
 
-##### 1.16的实现方式：`LootModifier`
+### 1.16的实现方式：`LootModifier`
 
 但是到了1.16.5，forge已经没有这个事件了。`RandomEnchantments`模组提供了一个解决方案，`mixin`。当然我们这边采用的方案是自定义`LootModifier`。
 

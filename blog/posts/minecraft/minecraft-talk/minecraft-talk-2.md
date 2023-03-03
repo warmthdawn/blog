@@ -1,9 +1,9 @@
 ---
-title: "Minecraft 睡前杂谈（二）—— 服务器与客户端：网络模型与数据同步"
-subtitle: ""
-tags: ["Minecraft", "Forge", "杂谈", "网络", "同步"]
-series: ["Minecraft 睡前杂谈"]
+shortTitle: "Minecraft 睡前杂谈（二）"
+tag: ["Minecraft", "Forge", "杂谈", "网络", "同步"]
+category: "Minecraft"
 date: 2021-11-23T13:43:00+08:00
+icon: mdi:web-sync
 ---
 
 # Minecraft 睡前杂谈（二）—— 服务器与客户端：网络模型与数据同步
