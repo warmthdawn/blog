@@ -93,7 +93,9 @@ export default hopeTheme({
   },
 
   plugins: {
-    blog: true,
+    blog: {
+      filter: page => Boolean(page.filePathRelative) && !page.frontmatter.home && !page.frontmatter.noblog,
+    },
 
     comment: {
       provider: "Giscus",
