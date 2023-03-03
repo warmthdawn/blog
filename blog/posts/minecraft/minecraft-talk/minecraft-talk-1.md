@@ -3,7 +3,7 @@ shortTitle: "Minecraft 睡前废话（一）"
 tag: ["Minecraft", "Forge", "掉落物", "杂谈", "方块"]
 category: "Minecraft"
 date: 2021-12-13T15:25:00+08:00
-icon: clarity:block-solid
+icon: cube
 ---
 
 # Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事

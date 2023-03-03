@@ -1,5 +1,5 @@
 ---
-icon: mdi:information
+icon: info
 ---
 
 # Intro Page

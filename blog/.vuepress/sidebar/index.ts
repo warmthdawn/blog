@@ -5,7 +5,7 @@ export const zhSidebar = sidebar({
     "",
     {
       text: "文章",
-      icon: "mdi:note-edit",
+      icon: "note",
       prefix: "posts/",
       children: "structure",
     },
