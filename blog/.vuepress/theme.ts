@@ -10,10 +10,7 @@ export default hopeTheme({
     url: "https://blog.warmthdawn.site",
   },
 
-  iconAssets: [
-    "https://blog.warmthdawn.site/css/iconfont.css",
-    "iconfont",
-  ] as any,
+  iconAssets: 'iconfont',
 
   logo: "/profile.png",
 
