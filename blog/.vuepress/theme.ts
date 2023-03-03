@@ -3,18 +3,18 @@ import {  zhNavbar } from "./navbar";
 import { zhSidebar } from "./sidebar";
 
 export default hopeTheme({
-  hostname: "https://warmthdawn.github.io",
+  hostname: "https://blog.warmthdawn.site",
 
   author: {
     name: "WarmthDawn",
-    url: "https://warmthdawn.github.io/blog",
+    url: "https://blog.warmthdawn.site",
   },
 
   iconAssets: "iconify",
 
   logo: "/profile.png",
 
-  repo: "wartmthdawn/blog",
+  repo: "warmthdawn/blog",
 
   docsDir: "docs",
 
