@@ -7,8 +7,8 @@ updates:
     schedule:
       interval: "daily"
 
-  # Maintain dependencies for gitsubmodule
-  - package-ecosystem: "gitsubmodule"
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
