@@ -7,7 +7,7 @@ export default hopeTheme({
 
   author: {
     name: "WarmthDawn",
-    url: "https://wartmthdawn.github.io/blog",
+    url: "https://warmthdawn.github.io/blog",
   },
 
   iconAssets: "iconify",
