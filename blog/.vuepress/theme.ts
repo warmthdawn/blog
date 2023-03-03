@@ -11,7 +11,7 @@ export default hopeTheme({
   },
 
   iconAssets: [
-    "/css/iconfont.css",
+    "https://blog.warmthdawn.site/css/iconfont.css",
     "iconfont",
   ] as any,
 
