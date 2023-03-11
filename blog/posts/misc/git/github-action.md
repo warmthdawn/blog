@@ -1,6 +1,6 @@
 ---
 category: "杂项"
-date: 2023-3-8
+date: 2023-03-08
 icon: github
 tag: ["CI/CD", "github", "workflow", "actions", "pages", "自动化"]
 ---
@@ -224,7 +224,7 @@ steps:
 缓存，顾名思义，就是每次 job 运行都需要的一些公共内容，例如，下载的依赖等，缓存是所有 action 公用的，你可以在 Github 页面找到当前仓库使用的缓存，它使用唯一的 key 进行存储（通常回事某个文件的 hash ，如 pnpm-lock）：
 ![Actions 的缓存](./images/action-cache.png)
 而构建的作用域，则是每次 workflow 的运行期间，它通常用于 job 数据的相互传递，或是通过 API 从外部读写，构建会在 workflow 运行后一段时间过期，在过期前你可以通过 API 或者手动下载：
-![](images/artifacts.png)
+![Artifacts](./images/artifacts.png)
 
 
 ### workflow 的表达式和上下文
@@ -531,7 +531,7 @@ jobs:
   Github Pages 是 github 一个有趣的功能之一，关于 pages 有很多资料，这里就不赘述了，在本文中将主要介绍 github pages 与 Github Action 有关的联动。即，如何通过 Github Action 来部署 pages 页面。
 
   要部署 Github Pages，首先我们需要进入仓库的设置，找到 pages 项目，在下图所示的选项中开启 Pages，你会发现 github 为我们提供了两种部署 Pages 的方式：基于分支的和基于 Action 的。
-  ![](images/pages-setting.png)
+  ![Page 设置](./images/pages-setting.png)
   第二种基于分支的部署方式很好理解，我们只需要将静态的 html 页面放入指定分支就行，你可以使用之前提到的 `actions/checkout` 脚本，配合 git push 等方式手动操作，也可以用一些第三方脚本，例如 peaceiris/actions-gh-page`
 ```yaml
 jobs:
