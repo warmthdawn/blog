@@ -4,6 +4,7 @@ tag: ["Minecraft", "Forge", "杂谈", "网络", "同步"]
 category: "Minecraft"
 date: 2021-11-23
 icon: network
+description: "介绍在 Minecraft Forge Modding 中如何处理各种场景下的网络同步，包括 TileEntity 和 GUI 等"
 ---
 
 # Minecraft 睡前杂谈（二）—— 服务器与客户端：网络模型与数据同步

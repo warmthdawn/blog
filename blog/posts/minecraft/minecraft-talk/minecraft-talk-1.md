@@ -4,6 +4,7 @@ tag: ["Minecraft", "Forge", "掉落物", "杂谈", "方块"]
 category: "Minecraft"
 date: 2021-12-13
 icon: cube
+description: "介绍在 Minecraft Forge Modding 中如何处理方块掉落物的各种方法"
 ---
 
 # Minecraft 睡前废话（一）—— 掉落物与方块：从撸树开始的故事

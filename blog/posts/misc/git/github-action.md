@@ -3,6 +3,7 @@ category: "杂项"
 date: 2023-03-08
 icon: github
 tag: ["CI/CD", "github", "workflow", "actions", "pages", "自动化"]
+description: "对 Github Actions 的介绍，举例了如何用它来自动测试、搭建 Pages、处理 Issue 和 PR 等"
 ---
 
 # Github Actions 的N+1种用法
