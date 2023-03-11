@@ -2,7 +2,7 @@
 shortTitle: "Minecraft 睡前杂谈（二）"
 tag: ["Minecraft", "Forge", "杂谈", "网络", "同步"]
 category: "Minecraft"
-date: 2021-11-23T13:43:00+08:00
+date: 2021-11-23
 icon: network
 ---
 
@@ -91,7 +91,7 @@ INSTANCE = NetworkRegistry.newSimpleChannel(
 *下面的代码会涉及到很多自定义网络包相关的内容，如果你对这部分内容不熟悉，可以先看下面部分再回头阅读这一章节*
 
 - 监听`OnDatapackSyncEvent`事件
-
+  
   `OnDatapackSyncEvent`这一事件会在玩家进入服务器后和`/reload`命令执行后触发，你可以再这个事件里面创建一个自定义的数据包，然后将你需要往客户端同步的内容塞进客户端里面。这部分实现起来非常的简单：
 
 ```java
@@ -118,19 +118,19 @@ public static void handleDatapackSync(DatapackSyncPacket packet, Supplier<Networ
 上面的代码忽略的序列化和反序列化部分，这部分内容将在下一章节详细描述。
 
 - 注册一个FML的`Login`类型的数据包
-
+  
   Forge在玩家连接服务器的时候添加了一个流程，在这个流程中Forge会发送一些自己的数据包（如模组列表，配置文件等），而1.16的forge也允许我们自定义这一类型的数据包。
-
+  
   但是，登录数据包和别的数据包不同的是，客户端每收到一个登录数据包**必须**向服务器回复一个数据包响应，这也造成了登录数据包相比于普通数据包需要额外进行一些设定。
-
+  
   **Forge的登录数据包在连接非常早期进行，如非必要尽量不使用登录数据包，因为这会大幅增加玩家登录服务器所需时间**
-
+  
   实现登录数据包的流程如下：
-
+  
   1. 创建一个`SimpleChannel`，这部分内容将在下一章节详细叙述
-
+  
   2. 声明数据包类，这个类必须实现`java.util.function.IntSupplier`接口 *（你可以定义一个抽象的`LoginPacket`类）*
-
+     
      这个接口返回的值是这个登录包的`index`，用于服务器判断客户端是否回复了这个登录数据包，同时因为这个`index`是数据包发送之前自动添加的所以我们也需要提供修改这个值的接口。这个包通常是这个亚子的：
 
 ```java
@@ -341,8 +341,8 @@ ItemStack itemStack = wrapped.readItemStack();
 
 ```java
 public class PacketChunkAura implements IMessage {
-	//.........
-	
+    //.........
+
     public static class Handler implements IMessageHandler<PacketChunkAura, IMessage> {
         @Override
         public IMessage onMessage(PacketChunkAura message, MessageContext ctx) {
@@ -352,7 +352,7 @@ public class PacketChunkAura implements IMessage {
 }
 
 public class PacketChunkAura implements IMessage, IMessageHandler<PacketChunkAura, IMessage> {
-	//........
+    //........
 
     @Override
     public IMessage onMessage(PacketChunkAura message, MessageContext ctx) {
@@ -365,8 +365,8 @@ public class PacketChunkAura implements IMessage, IMessageHandler<PacketChunkAur
 
 ```java
 public static class PacketChunkAura implements IMessage {
-	//.........
-	
+    //.........
+
     public IMessage handle(MessageContext ctx) {
         Minecraft mc = Minecraft.getMinecraft();
         mc.addScheduledTask(() -> {
@@ -391,7 +391,7 @@ public class ModNetwork {
     private static int nextID() {
         return ID++;
     }
-    
+
     public static void registerMessages() {
         INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID);
         //INSTANCE.registerMessage(PacketChunkAura.Handler.class, PacketChunkAura.class, nextID(), Side.Client);
@@ -472,7 +472,7 @@ public class PacketChunkAura {
         buf.writeInt(this.chunkZ);
         buf.writeDouble(this.aura);
     }
-    
+
     public void handler(Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.LOGIN_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
@@ -538,6 +538,7 @@ INSTANCE.sendToServer(new PacketXxx(xxx));
 - 并不是所有数据都是需要向客户端同步的。例如，在箱子的`TileEntity`中，并没有任何和网络同步有关的代码，因为我们在打开箱子之前，并不需要知道箱子里面有什么，也不需要将其发送到客户端，直到我们将打开`GUI`的时候，才需要知道箱子内的物品。（当然，除非你写的是水晶箱子或者物品展示架这种东西）
 
 - 并不是每个`tick`都需要同步网络数据的，大部分时候方块的数据是不变的，只有少部分情况下我们需要向客户端发送数据，通常的做法是在`setXxx`的同时发送一次数据包或者使用`脏标记`模式。
+
 - 同步代码涉及的方面比较多建议造好轮子
 
 ###### `getUpdateTag/Packet`和`handleUpdateTag/onDataPacket`
@@ -573,6 +574,7 @@ public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 - `getUpdatePacket`和`onDataPacket`默认的实现是空白，建议一般情况下使用上面的例子直接调用tag那组的实现
 
 - 实际上上面`getUpdateTag`和 `handleUpdateTag`的写法并不好，因为**不是所有的NBT都需要同步到客户端的，这严重造成了网络的浪费**
+
 - 这两个同步方法实际上是”静态“的，Tag系列的方法一般只会在区块加载时调用，Packet系列方法也之是在`notifyBlockUpdate`后调用，如果的方块的数据是动态变化的，你需要添加一些更主动的操作。
 
 ###### 脏标记、渲染更新与实时数据同步
@@ -751,18 +753,18 @@ public void updateProgressBar(int id, int data)
 ```java
 public abstract class MyContainer extends Container {
    private int data;
-  
+
    //客户端构造函数
    public MyContainer() {
        super(xxx, xxx)
-       
+
        data = new IntArray(1);
        this.addDataSlots(data);
    }
    //服务端构造函数
    public MyContainer(MyTileEntity te) {
        super(xxx, xxx)
-       
+
        data = new IIntArray() {
             public int get(int i) {
                 if(i == 0) return te.getData();
@@ -847,7 +849,7 @@ Minecraft的`Item`只是一个单纯的对象，它自己完全没有主动的�
 ```java
 Minecraft mc = Minecraft.getMinecraft();
 mc.addScheduledTask(() -> {
-    
+
 });
 ```
 

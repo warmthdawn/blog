@@ -2,7 +2,7 @@
 shortTitle: "Minecraft 睡前废话（一）"
 tag: ["Minecraft", "Forge", "掉落物", "杂谈", "方块"]
 category: "Minecraft"
-date: 2021-12-13T15:25:00+08:00
+date: 2021-12-13
 icon: cube
 ---
 
@@ -111,8 +111,6 @@ public static final BlockEntry<LinearChassisBlock> LINEAR_CHASSIS =
         .simpleItem()
         .register();
 ```
-
-    
 
 当然也有朴素版本的
 
@@ -301,11 +299,11 @@ public TileEntity getTileEntity(BlockPos pos)
 对于1.12的模组，Forge对Block类进行了一定程度的patch，你可以通过重写下面提到的部分方法来修改方块的掉落物。
 
 - 获取对应的物品`getItemDropped`、`damageDropped`和`getPickBlock`
-
+  
   我们现在已经知道，可以通过`Item.getItemFromBlock`方法来一定程度的获取方块对应的物品，但是，并不是所有方块的掉落物都是方块对应的物品。例如，煤炭、红石等矿石会掉落物品，草会掉落种子，成熟的作物掉落产品而未成熟的作物掉落的却是种子……
-
+  
   同时，上面刚刚提到的，方块的meta和物品的meta并不是严格对应的，在定义含有meta的方块时，你也需要指定他们的对应规则。
-
+  
   - 你可以重写`getItemDropped`方法来修改物品的掉落：*(From: 草方块)*
 
 ```java
@@ -336,11 +334,9 @@ public Item getItemDropped(IBlockState state, Random rand, int fortune)
 }
 ```
 
-    
-
-  - 如果你的方块使用了meta hack，你**必须**重写`damageDropped`方法。
-
-    通常我们会直接像下面这样写，因为大部分情况下方块和物品meta是对应的：
+- 如果你的方块使用了meta hack，你**必须**重写`damageDropped`方法。
+  
+  通常我们会直接像下面这样写，因为大部分情况下方块和物品meta是对应的：
 
 ```java
 @Override
@@ -351,7 +347,7 @@ public int damageDropped(IBlockState state)
 ```
 
     有的作者也喜欢吧`getMetaFromState`里面的代码`Ctrl+C/V`过去，毕竟这两个方法都需要重写的。
-
+    
     还有的情况，我们需要让一部分`BlockState`掉落为方块另一部分不掉落，例如`泥土`存在三种不同的状态`泥土`、`灰化土`、`砂土`，但是`灰化土`正常挖掘掉落的是普通的泥土：*(From：泥土)*
 
 ```java
@@ -367,9 +363,9 @@ public int damageDropped(IBlockState state)
 }
 ```
 
-  - 最后一个方法实际上和掉落物没有太大关系了，正如字面意思，这个方法的作用是给创造模式鼠标中键选择方块提供物品，同时，此方法也被部分模组（如`The One Probe`调用）。
-
-    实际上大部分情况下你并不需要重写这个方法，它的默认实现是这样的：
+- 最后一个方法实际上和掉落物没有太大关系了，正如字面意思，这个方法的作用是给创造模式鼠标中键选择方块提供物品，同时，此方法也被部分模组（如`The One Probe`调用）。
+  
+  实际上大部分情况下你并不需要重写这个方法，它的默认实现是这样的：
 
 ```java
 public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
@@ -384,11 +380,11 @@ public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
 ```
 
     显然，除非一个方块拥有多个部件或者可以添加覆盖版之类的东西，否则一般情况下，你需要重写的仅仅是`damageDropped`方法。
-
+    
     它有一个`RayTraceResult`类型的参数，你可以结合你方块模型的`Shape`一同判断玩家到底指向的是方块的哪个具体位置。
 
 - 掉落物数量 & 时运`quantityDropped`
-
+  
   实际上，这套方法用的并不是非常广泛，但是用它实现某些效果会比较简单，它们一共有三个方法可以重载：
 
 ```java
@@ -461,7 +457,7 @@ public int quantityDropped(Random random)
   值得注意的是**不是所有的时运掉落**都采用重写`quantityDropped`方法，下面的内容我们会看到另一种时运的实现
 
 - 经验掉落`getExpDrop`
-
+  
   没什么好说的，直接返回一给代表经验的数字就行。
 
 ```java
@@ -472,7 +468,7 @@ public int getExpDrop(IBlockState state, net.minecraft.world.IBlockAccess world,
 ```
 
 - 通用方法`getDrops`
-
+  
   一个名字很单纯，参数列表也很单纯的方法，把最终掉落物加入drops列表就行，实际上，这个方法的默认实现就是调用的上面提到的几个方法`getItemDropped`、`quantityDropped`和`damageDropped`
 
 ```java
@@ -523,7 +519,7 @@ public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos 
 ```
 
 - 精准采集`canSilkHarvest`和`getSilkTouchDrop`
-
+  
   精准采集的这两个方法，实际上和上面的方法没有太大的关联，当一个方块被精准采集的时候*一般情况下*[^1]并不会调用`getDrops`方法
 
   [^1]: 特殊情况包括在`HarvestDropsEvent`种主动调用`getDrops`方法和下面会叙述的另一种精准采集的实现方式
@@ -553,7 +549,7 @@ public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, Enti
 ```
 
 - 兼容性与拓展性的权衡：重载方法的注意事项
-
+  
   看到上面那一吨方法之后，相信很多小伙伴已经开始头晕了。然而当我们打开ide之后，让我们更加头晕的事情来了：
 
 ```java
@@ -613,7 +609,7 @@ new AirBlock(AbstractBlock.Properties.create(Material.AIR).doesNotBlockMovement(
 首先，还不了解`LootTable`的朋友可以参考一些 Minecraft Wiki 的相关资料，这里不过多说明了。
 
 - JSON定义
-
+  
   [战利品表 - Minecraft Wiki，最详细的我的世界百科 (fandom.com)](https://minecraft.fandom.com/zh/wiki/战利品表)
 
 ```json
@@ -638,20 +634,18 @@ new AirBlock(AbstractBlock.Properties.create(Material.AIR).doesNotBlockMovement(
 }
 ```
 
-  
-
 - 高级版JSON定义：`DataGenerator`
-
+  
   直接搓json只适用于方块不多的情况，显然，当方块的数量变多之后，继续搓json会变得十分痛苦
-
+  
   更多有关DataGenerator的信息，可以参考
-
+  
   [Data Generator - Boson 1.16 Modding Tutorial (v2mcdev.com)](https://boson.v2mcdev.com/datagnerator/intro.html)
-
+  
   [Datageneration/Loot Tables - Forge Community Wiki (gemwire.uk)](https://forge.gemwire.uk/wiki/Datageneration/Loot_Tables#Another_class_.28Optional.29)
-
+  
   [Tut14 Ep7 - McJty Modding](https://wiki.mcjty.eu/modding/index.php?title=Tut14_Ep7)
-
+  
   写完`DataGenerator`之后，运行`runData`，你会发现，在`src/generated`目录下出现生成的json文件了
 
 ```java
@@ -715,11 +709,11 @@ public class PolymerBlockTables extends BlockLootTables {
   值得注意的是，上面这段代码继承自`BlockLootTables`, 它的部分字段如`IMMUNE_TO_EXPLOSIONS`是硬编码的，或许更好的方式是`Ctrl+C/V`一份出来，或者参考上面`mcjty`的教程等自己重新实现一份`LootTableProvider`。
 
 - 逃课版定义：Create的`Registrate`库
-
+  
   还记得开头放出来的那一段Create的注册代码吗？抛开造轮子不谈，不少模组作者也给我们整出来了现成的轮子，诸如`Registerate`
-
+  
   [tterrag1098/Registrate at 1.16 (github.com)](https://github.com/tterrag1098/Registrate/tree/1.16)
-
+  
   具体的使用方式可以参考`Create`，这里简单的提供一小段实例代码吧！
 
 ```java
@@ -750,6 +744,7 @@ A --> |false| B["getBlock()"] --> C["canHarvest = canHarvestBlock()"]
 --> G["done = removeBlock(canHarvest)"] --> H{"canHarvest\n&& done?"} --> |false|I[return]
 H -->|true| J["harvestBlock(...)"] --> I
 ```
+
 `removeBlock(canHarvest)`方法
 
 ```mermaid
@@ -1516,6 +1511,7 @@ public class SmeltingEnchantmentModifier extends LootModifier {
     }
 }
 ```
+
 在`DataGenerator`里面添加相关内容
 
 ```java
@@ -1550,6 +1546,7 @@ public class SampleDataGenerator {
     }
 }
 ```
+
 当然，不写`DataGenerator`，写JSON也可以的，注意是两个json哦。
 
 `data/forge/loot_modifiers/global_loot_modifiers.json`
@@ -1595,5 +1592,5 @@ private static final RegistryObject<SmeltingEnchantmentModifier.Serializer> SMEL
 //不要忘记在Mod构造函数里面添加
 LootRegistries.GLM.register(modBus);
 ```
-更多信息可以参考 [Forge的官方样例](https://github.com/MinecraftForge/MinecraftForge/tree/1.16.x/src/test/java/net/minecraftforge/debug/gameplay/loot)
 
+更多信息可以参考 [Forge的官方样例](https://github.com/MinecraftForge/MinecraftForge/tree/1.16.x/src/test/java/net/minecraftforge/debug/gameplay/loot)
