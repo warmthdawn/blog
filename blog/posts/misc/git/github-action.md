@@ -256,9 +256,9 @@ steps:
 
 ## 常用的 workflow 脚本
 
-- git 基础操作：`actions/checkout`
-  作为一个部署在 Github 上面的 CI，几乎所有 workflow 都需要和 git 打交道。而 `actions/checkout` 就是针对 git 一系列基本操作的封装。
-  下面列出了常见的用法，你可以从它的[仓库](https://github.com/actions/checkout)获取更多详情。
+### git 基础操作：`actions/checkout`
+作为一个部署在 Github 上面的 CI，几乎所有 workflow 都需要和 git 打交道。而 `actions/checkout` 就是针对 git 一系列基本操作的封装。
+下面列出了常见的用法，你可以从它的[仓库](https://github.com/actions/checkout)获取更多详情。
 ```yaml
 # 通常情况下，你只需要简单的 use 以下这个脚本，它就会为你自动 checkout 到当前 workflow 运行的分支上（即：${{ github.repository }}）
 - uses: actions/checkout@v3
@@ -330,16 +330,16 @@ jobs:
           git push
 ```
 
-- 运行环境：`actions/setup-xxx`
-  当我们把 git 仓库内代码拉下来之后，下一步就是安装运行环境，Github Actions 官方为我们提供了许多不同语言开发环境的安装脚本：
-  - [Setup Node.js environment · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-node-js-environment)
-  - [Setup Java JDK · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-java-jdk)
-  - [Setup Go environment · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-go-environment)
-  - [Setup Python · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-python)
-  - [Setup .NET Core SDK · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-net-core-sdk)
-  - [Setup Ruby, JRuby and TruffleRuby · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby)
-  你可以根据需求选择安装脚本，这里以 nodejs 为例。
-  通常情况下，你只需要简单指定版本即可，在 `setup-node` 之后，你就可以直接正常运行 node、npm等指令了。
+### 运行环境：`actions/setup-xxx`
+当我们把 git 仓库内代码拉下来之后，下一步就是安装运行环境，Github Actions 官方为我们提供了许多不同语言开发环境的安装脚本：
+- [Setup Node.js environment · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-node-js-environment)
+- [Setup Java JDK · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-java-jdk)
+- [Setup Go environment · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-go-environment)
+- [Setup Python · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-python)
+- [Setup .NET Core SDK · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-net-core-sdk)
+- [Setup Ruby, JRuby and TruffleRuby · Actions · GitHub Marketplace](https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby)
+你可以根据需求选择安装脚本，这里以 nodejs 为例。
+通常情况下，你只需要简单指定版本即可，在 `setup-node` 之后，你就可以直接正常运行 node、npm等指令了。
 ```yaml
 steps:
 - uses: actions/checkout@v3
@@ -356,7 +356,7 @@ steps:
   with:
     node-version-file: '.nvmrc'
 ```
-  不少 setup 脚本都是自带缓存的，它不仅可以缓存环境本身，一般也支持缓存依赖：
+不少 setup 脚本都是自带缓存的，它不仅可以缓存环境本身，一般也支持缓存依赖：
 ```yaml
 steps:
 - uses: actions/checkout@v3
@@ -378,7 +378,7 @@ steps:
 - run: pnpm install --frozen-lockfile
 - run: pnpm test
 ```
-  也支持同时缓存多个项目的依赖（monorepos）
+也支持同时缓存多个项目的依赖（monorepos）
 ```yaml
 steps:
 - uses: actions/checkout@v3
@@ -394,9 +394,9 @@ steps:
 - run: npm ci
 - run: npm test
 ```
-- 缓存：`actions/cache`
-  其实我们已经在各种场景下提到缓存了，如果你觉得自带的缓存不够用的话，Github Actions 官方也提供了自己操作缓存的脚本。
-  > 值得一提的是，默认情况下 Github 允许免费使用的缓存大小为 500mb
+### 缓存：`actions/cache`
+其实我们已经在各种场景下提到缓存了，如果你觉得自带的缓存不够用的话，Github Actions 官方也提供了自己操作缓存的脚本。
+> 值得一提的是，默认情况下 Github 允许免费使用的缓存大小为 500mb
 
 下面的例子演示了如何使用 `actions/cache` 实现和上文相同效果的 pnpm 依赖缓存
 ```yaml
@@ -438,7 +438,7 @@ steps:
   run: pnpm install --frozen-lockfile
 ```
 
-  同样的道理，我们也可以尝试缓存我们自己文件，下面的脚本将会对 ./build 和 ./src/generated 文件夹进行缓存，把 `actions/cache` 放在编译之前就行。
+同样的道理，我们也可以尝试缓存我们自己文件，下面的脚本将会对 ./build 和 ./src/generated 文件夹进行缓存，把 `actions/cache` 放在编译之前就行。
 ```yaml
 - uses: actions/cache@v3
   with:
@@ -450,7 +450,7 @@ steps:
     # restore-keys 不需要了，因为我们的 key 不会变
 ```
 
-  如果我们直接使用 `actions/cache`，在运行 workflow 的时候，你会发现实际上它执行了两个 step， 在我们定义的其他 step 执行完成只会，github 还会执行一个 post-cache 来重新写入缓存，所以我们通常情况下不需要考虑缓存的读写时机，当然如果你想的话，可以自定义它们。
+如果我们直接使用 `actions/cache`，在运行 workflow 的时候，你会发现实际上它执行了两个 step， 在我们定义的其他 step 执行完成只会，github 还会执行一个 post-cache 来重新写入缓存，所以我们通常情况下不需要考虑缓存的读写时机，当然如果你想的话，可以自定义它们。
 ```yaml
 jobs:
   build:
@@ -483,7 +483,7 @@ jobs:
         key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
 ```
 
-  你可以读取 cache 脚本的输出，从而获取 cache 是否命中
+你可以读取 cache 脚本的输出，从而获取 cache 是否命中
 ```yaml
 - id: build-core-cache
   uses: actions/cache@v3
@@ -500,8 +500,8 @@ jobs:
   [actions/cache: Cache dependencies and build outputs in GitHub Actions](https://github.com/actions/cache)
   [Caching dependencies to speed up workflows - GitHub Docs](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows)
   
-- 构件：`actions/upload-artifact` 和 `actions/download-artifact`
-  构件（artifact）的概念我们之前提到过了，想要在 actions 里面操作它其实很简单：
+### 构件：`actions/upload-artifact` 和 `actions/download-artifact`
+构件（artifact）的概念我们之前提到过了，想要在 actions 里面操作它其实很简单：
 ```yaml
   # 上传构件
 - uses: actions/upload-artifact@v3
@@ -522,17 +522,17 @@ jobs:
     path: path/to/artifact/
 ```
 
-  大部分情况下，其实我们并不需要使用构件，因为一个 job 已经足够完成大部分工作，不过，构件允许你将多个任务分开成不同的 job，虽然一定程度来说有点浪费计算资源，但是这可以让构建过程更加清晰，同时也能允许你在不同的环境下编译不同的版本，然后统一部署/发布。
-  参考：
-  [Upload a Build Artifact · Actions · GitHub Marketplace](https://github.com/marketplace/actions/upload-a-build-artifact)
-  [Download a Build Artifact · Actions · GitHub Marketplace](https://github.com/marketplace/actions/download-a-build-artifact)
+大部分情况下，其实我们并不需要使用构件，因为一个 job 已经足够完成大部分工作，不过，构件允许你将多个任务分开成不同的 job，虽然一定程度来说有点浪费计算资源，但是这可以让构建过程更加清晰，同时也能允许你在不同的环境下编译不同的版本，然后统一部署/发布。
+参考：
+[Upload a Build Artifact · Actions · GitHub Marketplace](https://github.com/marketplace/actions/upload-a-build-artifact)
+[Download a Build Artifact · Actions · GitHub Marketplace](https://github.com/marketplace/actions/download-a-build-artifact)
 
-- Pages：`actions/deploy-pages` 和  `peaceiris/actions-gh-page`
-  Github Pages 是 github 一个有趣的功能之一，关于 pages 有很多资料，这里就不赘述了，在本文中将主要介绍 github pages 与 Github Action 有关的联动。即，如何通过 Github Action 来部署 pages 页面。
+### Pages：`actions/deploy-pages` 和  `peaceiris/actions-gh-page`
+Github Pages 是 github 一个有趣的功能之一，关于 pages 有很多资料，这里就不赘述了，在本文中将主要介绍 github pages 与 Github Action 有关的联动。即，如何通过 Github Action 来部署 pages 页面。
 
-  要部署 Github Pages，首先我们需要进入仓库的设置，找到 pages 项目，在下图所示的选项中开启 Pages，你会发现 github 为我们提供了两种部署 Pages 的方式：基于分支的和基于 Action 的。
-  ![Page 设置](./images/pages-setting.png)
-  第二种基于分支的部署方式很好理解，我们只需要将静态的 html 页面放入指定分支就行，你可以使用之前提到的 `actions/checkout` 脚本，配合 git push 等方式手动操作，也可以用一些第三方脚本，例如 peaceiris/actions-gh-page`
+要部署 Github Pages，首先我们需要进入仓库的设置，找到 pages 项目，在下图所示的选项中开启 Pages，你会发现 github 为我们提供了两种部署 Pages 的方式：基于分支的和基于 Action 的。
+![Page 设置](./images/pages-setting.png)
+第二种基于分支的部署方式很好理解，我们只需要将静态的 html 页面放入指定分支就行，你可以使用之前提到的 `actions/checkout` 脚本，配合 git push 等方式手动操作，也可以用一些第三方脚本，例如 peaceiris/actions-gh-page`
 ```yaml
 jobs:
   deploy:
@@ -552,8 +552,8 @@ jobs:
           # 需要部署的目录
           publish_dir: ./public
 ```
-  用上面这种方式部署的 pages，会额外再触发一次 github 内置的 pages 部署任务，并且会额外再项目中添加一个独立的分支和很多额外的 commit，我们可以用 Action 的方式部署 Pages。
-  在设置里面将 Pages 的部署方式改成 Actions 之后，我们可以通过下面的脚步部署 Pages（下面是本博客的部署脚本简化）：
+用上面这种方式部署的 pages，会额外再触发一次 github 内置的 pages 部署任务，并且会额外再项目中添加一个独立的分支和很多额外的 commit，我们可以用 Action 的方式部署 Pages。
+在设置里面将 Pages 的部署方式改成 Actions 之后，我们可以通过下面的脚步部署 Pages（下面是本博客的部署脚本简化）：
 ```yaml
 name: Deploy to Pages
 on:
@@ -610,12 +610,12 @@ jobs:
         uses: actions/deploy-pages@v1
 ```
 
-  参考：
-  [Deploy GitHub Pages site · Actions · GitHub Marketplace](https://github.com/marketplace/actions/deploy-github-pages-site)
-  [GitHub Pages action · Actions · GitHub Marketplace](https://github.com/marketplace/actions/github-pages-action)
+参考：
+[Deploy GitHub Pages site · Actions · GitHub Marketplace](https://github.com/marketplace/actions/deploy-github-pages-site)
+[GitHub Pages action · Actions · GitHub Marketplace](https://github.com/marketplace/actions/github-pages-action)
 
-- Releases:  `ncipollo/release-action`
-  Github 官方并没有提供自动发布 release 的脚本，但是有很多第三方脚本支持这一功能
+### Releases:  `ncipollo/release-action`
+Github 官方并没有提供自动发布 release 的脚本，但是有很多第三方脚本支持这一功能
 ```
 name: Releases
 
@@ -637,10 +637,10 @@ jobs:
           bodyFile: "body.md"
           token: ${{ secrets.YOUR_GITHUB_TOKEN }}
 ```
-  具体方法就不赘述了，可以参考脚本的文档：
-  [release-action](https://github.com/ncipollo/release-action/blob/main/README.zh-Hans.md)
-- 自动关闭 issue：`actions/stale`
-  一个 issue 长时间无人响应，通过机器人自动关闭，可能很多人见过这种效果，这可以很容易的通过 Github Actions 实现：
+具体方法就不赘述了，可以参考脚本的文档：
+[release-action](https://github.com/ncipollo/release-action/blob/main/README.zh-Hans.md)
+### 自动关闭 issue：`actions/stale`
+一个 issue 长时间无人响应，通过机器人自动关闭，可能很多人见过这种效果，这可以很容易的通过 Github Actions 实现：
 ```yaml
 name: 'Close stale issues and PRs'
 on:
@@ -677,12 +677,12 @@ jobs:
           # days-before-stale: 30
           # days-before-close: 5
 ```
-  更多配置参考 [actions/stale: Marks issues and pull requests that have not had recent interaction (github.com)](https://github.com/actions/stale)
+更多配置参考 [actions/stale: Marks issues and pull requests that have not had recent interaction (github.com)](https://github.com/actions/stale)
 
-- 自定义脚本: `actions/github-script` 
-  如果你找不到满足自己需求的脚本，你也可以实现自己的脚本，开一个新的仓库并且根据相应文档当然是一种选择，但是如果我们只需要一些简单的需求呢？除了直接使用 run 执行 shell 指令，我们还可以使用 `actions/github-script`，以 JavaScript 脚本的方式，调用 Github Actions 内部的一些 API。
+### 自定义脚本: `actions/github-script` 
+如果你找不到满足自己需求的脚本，你也可以实现自己的脚本，开一个新的仓库并且根据相应文档当然是一种选择，但是如果我们只需要一些简单的需求呢？除了直接使用 run 执行 shell 指令，我们还可以使用 `actions/github-script`，以 JavaScript 脚本的方式，调用 Github Actions 内部的一些 API。
 
-  你可以直接在 scripts 中调用 github 的 [Rest API](https://octokit.github.io/rest.js/)
+你可以直接在 scripts 中调用 github 的 [Rest API](https://octokit.github.io/rest.js/)
 ```yaml
 # 在 issue 创建的时候自动评论
 on:
@@ -706,7 +706,7 @@ jobs:
             })
 ```
 
-  脚本的返回值可以通过 outputs.result 获取（其实  `echo result=${ xxx } >> $GITHUB_OUTPUT`  也是一样的）
+脚本的返回值可以通过 outputs.result 获取（其实  `echo result=${ xxx } >> $GITHUB_OUTPUT`  也是一样的）
 ```yaml
 - uses: actions/github-script@v6
   id: set-result
@@ -717,7 +717,7 @@ jobs:
   run: echo "${{steps.set-result.outputs.result}}"
 ```
 
-  如果你相传递参数，可以用环境变量
+如果你相传递参数，可以用环境变量
 ```yaml
 steps:
   - uses: actions/github-script@v6
@@ -730,8 +730,8 @@ steps:
         console.log(`Hello ${FIRST_NAME} ${LAST_NAME}`)
 ```
 
-  你还可以直接让这个 job 执行失败：
-  （其实，更简单的方案是`run: exit 0`，不过下面的写法可以提供失败的原因。
+你还可以直接让这个 job 执行失败：
+（其实，更简单的方案是`run: exit 0`，不过下面的写法可以提供失败的原因。
 ```yaml
 steps:
   - uses: actions/github-script@v6
@@ -741,10 +741,10 @@ steps:
         core.setFailed(`Action failed with error ${err}`);
 
 ```
-  更多用法，可以参考官方文档：[actions/github-script: Write workflows scripting the GitHub API in JavaScript](https://github.com/actions/github-script)
+更多用法，可以参考官方文档：[actions/github-script: Write workflows scripting the GitHub API in JavaScript](https://github.com/actions/github-script)
 
-- 为 Pull Request 进行代码检查
-  其实这个需求并不需要使用某些特别的脚本，只需要让某个 workflow 由 pull_request 事件触发即可，当这个 workflow 执行失败的时候，将会阻塞 pullrequest 的合入，你只需要让检查的脚本，在不满足要求的时候 exit 0 就可以达到对应的需求了。
+### 为 Pull Request 进行代码检查
+其实这个需求并不需要使用某些特别的脚本，只需要让某个 workflow 由 pull_request 事件触发即可，当这个 workflow 执行失败的时候，将会阻塞 pullrequest 的合入，你只需要让检查的脚本，在不满足要求的时候 exit 0 就可以达到对应的需求了。
 ## 总结
 
 Github Actions 本身非常强大，它与 Github 的各种功能深入的联动，可以很好的方便我们的开发，构建。
