@@ -128,7 +128,7 @@ export default hopeTheme({
       playground: {
         presets: ["ts", "vue"],
       },
-      presentation: {
+      revealJs: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
       },
       stylize: [
