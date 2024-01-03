@@ -17,7 +17,7 @@
     "katex": "0.16.9",
     "mermaid": "10.6.1",
     "reveal.js": "5.0.2",
-    "vue": "3.3.12",
+    "vue": "3.4.4",
     "vuepress": "2.0.0-rc.0",
     "vuepress-plugin-seo2": "2.0.0-rc.5",
     "vuepress-theme-hope": "2.0.0-rc.5"
